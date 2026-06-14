@@ -11,7 +11,7 @@ Fallout 2: Nevada의 대화문, 기록, UI 텍스트 등을 한국어로 번역�
 
 1. Fallout 2 본편을 설치합니다.
 2. [Fallout Nevada Extended 버전](https://www.nma-fallout.com/threads/fallout-nevada-extended.207311/)을 설치합니다.
-3. 이 저장소의 한국어 번역 데이터를 Fallout 2 본편 폴더에 덮어씁니다.
+3. 이 저장소의 한국어 번역 데이터를 Fallout 2 본편 폴더 내 Nevada Mod (Extended)에 덮어씁니다.
 4. `Nevada.cfg` 파일을 열고 `[system]` 섹션에서 아래와 같이 수정합니다.
 
 ```ini
