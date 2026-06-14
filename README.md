@@ -15,7 +15,7 @@ Fallout 2: Nevada의 대화문, 기록, UI 텍스트 등을 한국어로 번역�
 [system]
 language=Korean
 ```
-5. sfall의 버전이 다르기 때문에 창 조절은  sfall configurator.exe 로 가능합니다.
+5. sfall의 버전이 다르기 때문에 창 조절은  SF-configurator.exe 로 가능합니다.
 
 ---
 
