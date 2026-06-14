@@ -1,0 +1,11 @@
+/.gitattributes text eol=lf
+
+*.bio text eol=lf
+*.ini text eol=lf
+*.md text eol=lf
+*.msg text eol=lf
+*.sve text eol=lf
+*.txt text eol=lf
+
+*.dll binary
+*.ttf binary
