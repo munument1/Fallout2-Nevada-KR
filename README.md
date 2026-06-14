@@ -1,2 +1,37 @@
-# Fallout2-Nevada-KR-text
-폴아웃2 네바다의 UI, 대화, 기록, 아이템 등을 번역한 파일입니다. 해당 데이터만으로는 한글이 적용되지 않습니다.
+# Fallout 2 Nevada Korean Translation
+
+Fallout 2: Nevada의 대화문, 기록, UI 텍스트 등을 한국어로 번역한 파일입니다.
+
+> 현재 Fallout 2 엔진은 기본적으로 한국어 출력을 지원하지 않습니다.
+> 따라서 이 번역 파일만 적용해서는 게임 내에서 한국어가 정상적으로 표시되지 않을 수 있습니다.
+
+---
+
+## 한글 적용 방법
+
+1. Fallout 2 본편을 설치합니다.
+2. [Fallout Nevada Extended 버전](https://www.nma-fallout.com/threads/fallout-nevada-extended.207311/)을 설치합니다.
+3. 이 저장소의 한국어 번역 데이터를 Fallout 2 본편 폴더에 덮어씁니다.
+4. `Nevada.cfg` 파일을 열고 `[system]` 섹션에서 아래와 같이 수정합니다.
+
+```ini
+[system]
+language=Korean
+```
+
+---
+
+## 주의사항
+
+* 이 자료는 Fallout 2: Nevada용 한국어 번역 데이터입니다.
+* Fallout 2 본편 및 Fallout Nevada Extended 원본 파일은 포함되어 있지 않습니다.
+* 사용 중인 Nevada 버전과 번역 데이터의 버전이 맞지 않으면 일부 문장, 대화문, UI가 정상적으로 출력되지 않을 수 있습니다.
+* 한글 출력 지원 환경이 없을 경우 글자가 깨지거나 표시되지 않을 수 있습니다.
+
+---
+
+## Credits
+
+* Fallout 2: Nevada 개발진
+* Fallout Nevada Extended 제작진
+* Korean translation: `munument1`
