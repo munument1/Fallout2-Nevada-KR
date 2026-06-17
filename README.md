@@ -31,3 +31,4 @@ language=Korean
 * Fallout 2: Nevada 개발진
 * Fallout Nevada Extended 제작진
 * Korean translation: `munument1`
+* * SFall 제작진 - (한글호환패치 [소스코드](https://github.com/munument1/Unofficial-KR-Sfall))
