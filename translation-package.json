@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "mod": "네바다",
+  "baseline": "Nevada Extended 기존 번역 (정확한 원본 태그 미확정)",
+  "engine_repository": "https://github.com/munument1/Fallout2-Korean-Text-Engine",
+  "engine_profile": "nevada",
+  "engine_validation": "selected screens checked with official sfall 4.5.1",
+  "sources": [
+    {
+      "from": "data",
+      "to": "data"
+    },
+    {
+      "from": "APPEARANCE",
+      "to": "APPEARANCE"
+    },
+    {
+      "from": "translations",
+      "to": "translations"
+    }
+  ],
+  "required_files": [
+    "data/text/korean/game/misc.msg",
+    "data/premade/combat.bio",
+    "data/premade/diplomat.bio",
+    "data/premade/stealth.bio"
+  ]
+}
