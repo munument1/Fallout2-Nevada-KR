@@ -1,30 +1,29 @@
-# 네바다 새 출력 엔진 설치 참고
+# Nevada Extended 독립형 한국어 텍스트 엔진 설치 안내
 
-공식 sfall 4.5.1과 별도 한국어 출력 모듈로 기존 설치본의 선택 화면을 확인했다. 전체 UI·장시간 플레이 또는 미래 sfall 버전의 검증을 뜻하지 않는다. 첫 실행 종료는 같은 설정 재실행에서 재현되지 않았으며 원인은 미확정이다.
+이 안내는 v1.2.0-beta.1 공개 베타 이후의 방법입니다. 기존 게임별 --profile 방식과 중국어 수정 EXE/DLL 입력은 필요하지 않습니다.
 
-## 모드와 엔진을 별도 관리
+## 설치 순서
 
-기준 모드: Nevada Extended 기존 번역 (정확한 원본 태그 미확정). 엔진: [공통 출력 모듈](https://github.com/munument1/Fallout2-Korean-Text-Engine). 실행 프로필: `nevada`.
+1. 대상 모드와 번역 ZIP의 기준 버전을 일치시킵니다. 게임 위치는 **Nevada.exe와 NevadaHD.exe가 있는 폴더**입니다.
+2. **먼저** 번역 데이터 ZIP을 게임 실행 폴더에 적용해 data/text/korean 등의 파일을 배치합니다. ZIP에 엔진 바이너리나 게임 원본 EXE, DAT, INT가 없어야 합니다.
+3. [v1.2.0-beta.1 설치기](https://github.com/munument1/Fallout2-Korean-Text-Engine/releases/tag/v1.2.0-beta.1)에서 Fallout2-Korean-Native-Setup.exe를 실행하고 폴더 하나만 고릅니다. 호환 EXE 전체를 Watcom ABI 구조로 검사하며 게임 종류는 선택하지 않습니다.
+4. 설치 후 **Nevada.cfg**의 language=korean을 확인합니다. 한국어 MSG가 없으면 언어를 강제로 바꾸지 않습니다.
+5. 게임 원래 실행 방법으로 구동하고 메뉴, 대화, 줄바꿈, 전투, 저장/불러오기를 점검합니다.
 
-공식 sfall의 DLL은 수정하지 않는다. 공통 엔진은 사용자가 별도로 제공한 CJK EXE·글꼴 DLL에서 런타임을 구성하며, 모드 전용 EXE 변경과 리소스를 보존한다. 지원 EXE 해시는 공통 엔진의 runtime-manifest.json에 한정한다. 검증한 모드와 다른 EXE를 강제로 허용하지 않는다.
+## 모드 전용 제한
 
-번역 적용은 설치본의 language=korean에 맞춰 data/text/korean을 사용한다. 배경 이야기는 data/premade의 .bio 파일을 포함한다. 원본 모드의 CFG 전체·ddraw.ini 전체·sfall.dat·스크립트를 번역 ZIP으로 덮어쓰지 않는다.
+Nevada의 Extended sfall 4.3.0.2와 고해상도 설정을 보존하세요. 일반 sfall 4.5.1 DLL만 덮으면 고해상도 패치 충돌이 재현됩니다. 독립형 엔진은 기존 DLL은 유지하고 필요한 CRC만 설정에 추가합니다.
 
-## 메뉴 표시 설정
+## 파일 보존과 복구
 
-공식 CJK 경로의 메뉴 버튼·글자 배율에 맞춘 확인된 설정이다.
+- 번역 ZIP은 게임 스크립트, EXE, sfall DLL 및 전체 CFG를 덮어쓰지 않습니다.
+- 기존 모드에 포함된 sfall을 버전 확인 없이 일반 최신판으로 교체하지 않습니다. 독립형 엔진은 기존 DLL을 유지하고 필요한 ExtraCRC만 설정에 추가합니다.
+- 설치기는 전체 게임을 복제하지 않고 수정 대상 원본 파일만 korean_engine_backup_v2에 저장합니다. 바이너리 EXE를 변경하므로 최소 원본 파일 복구 기록은 유지합니다.
+- 사용자가 별도로 교체한 sfall DLL은 엔진 자체의 --restore로 돌아오지 않습니다. 그런 변경은 별도의 원본 DLL 보관이 필요합니다.
+- 기존 번역 내용과 CP949 텍스트는 다시 번역하거나 일괄 치환하지 않습니다. UTF-8로 저장된 일부 파일은 ZIP 빌드 시 손실 없는 CP949 변환을 수행합니다.
 
-```ini
-[MAINMENU]
-MAIN_MENU_SIZE=0
-USE_HIRES_IMAGES=0
-SCALE_BUTTONS_AND_TEXT_MENU=0
-```
+## 검증 단계
 
-이 항목은 f2_res.ini에 들어간다. 해상도 자체는 별도로 유지한다. 기존 메뉴 그림을 원래 크기로 표시해 배경만 확대되는 배치 어긋남을 피한다.
+실행 파일 구조, 짧은 기동, 기본 한국어 렌더링, SHA-256 기반 복구를 확인했습니다. 모든 모드 버전의 전체 스크립트, 긴 대화, 전투와 저장/불러오기를 전수 검증한 것은 아닙니다.
 
-글꼴은 TEXT=Galmuri9 / Size 10 / Weight 400, BUTTON=Galmuri11 / Size 14 / Weight 600을 사용한다. SoftGreen=1, SoftTextColors=1은 차분한 글자색 설정이다.
-
-이전 배포물을 되돌리려면 보존된 기존 릴리스를 사용한다. 공통 엔진 설치 도구로 변경한 파일은 해당 도구의 --restore로 복구하며, 사용자가 변경한 파일을 자동 덮어쓰지 않는다.
-
-클래식 ZIP은 게임에서 읽는 번역 텍스트를 대상으로 하며 SVE 원문 백업 파일과 다른 언어의 Appearance 텍스트는 포함하지 않는다. 해당 원본 파일은 저장소에서 보존한다.
+[구형 설치 방식 보관본](LEGACY_INSTALLATION_KO.md)
