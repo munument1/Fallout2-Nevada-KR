@@ -17,6 +17,7 @@ Nevada Extended용 한국어 번역, 실행 파일과 글꼴 설정을 함께 �
 - 기존 한국어 번역 데이터 보존
 - `Nevada.cfg` 한국어 설정
 - 일반판·HD판 한국어 출력 연결
+- 고해상도 메시지창 한글 줄바꿈 보완
 - 본문 돋움 11, 버튼 카페24 아네모네 에어 16·굵게
 - 네바다 동봉 sfall의 한국어 메시지와 실행 파일 등록
 
@@ -24,7 +25,7 @@ Nevada Extended용 한국어 번역, 실행 파일과 글꼴 설정을 함께 �
 
 ## 패키지 제작
 
-완성형 패키지는 소유자의 검증된 네바다 설치 파일과 기존 번역 ZIP으로 만듭니다. 공통 글꼴 DLL은 v1.2.3과 동일하며, HD 실행 파일의 초기화 연결만 네바다 패키지에 보충합니다.
+완성형 패키지는 소유자의 검증된 네바다 설치 파일과 기존 번역 ZIP으로 만듭니다. 공통 글꼴 DLL은 v1.2.3과 동일하며, HD 실행 파일의 초기화 연결과 네바다 고해상도 패치의 한글 줄바꿈을 보충합니다.
 
 ```powershell
 python tools/build_classic_complete.py --game "D:\Fallout 2\Nevada" --translations translation-data.zip --output Fallout2-Nevada-KR-classic-complete.zip --engine-tools path/to/Fallout2-Korean-Text-Engine

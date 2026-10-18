@@ -68,6 +68,40 @@ def hd_fallback(raw):
     return bytes(result)
 
 
+def patch_hrp(raw):
+    if sha(raw) != '2d3c52cf624b22958db7fa44e3db71c2d0478503da5ceb40f0636dea1202fb5a':
+        raise ValueError('Unknown Nevada HRP DLL; refusing text-fit patch')
+    code = (Path(__file__).resolve().parent/'nevada_monitor_fit.bin').read_bytes()
+    if sha(code) != 'f81bed55e497eb1721291c81f8499e6d2ea93ecb78de6ab2e09132bdd98ccf48':
+        raise ValueError('Text-fit code hash mismatch')
+    pe = pefile.PE(data=raw)
+    align = lambda value, boundary: (value+boundary-1)//boundary*boundary
+    last = pe.sections[-1]
+    virtual = align(last.VirtualAddress+max(last.Misc_VirtualSize,last.SizeOfRawData),pe.OPTIONAL_HEADER.SectionAlignment)
+    physical = align(len(raw),pe.OPTIONAL_HEADER.FileAlignment)
+    header_offset = pe.sections[0].get_file_offset()+len(pe.sections)*40
+    if header_offset+40 > pe.OPTIONAL_HEADER.SizeOfHeaders:
+        raise ValueError('No safe DLL section-header space')
+    result=bytearray(raw)
+    result.extend(b'\0'*(physical-len(result)))
+    size=align(len(code),pe.OPTIONAL_HEADER.FileAlignment)
+    result.extend(code+b'\0'*(size-len(code)))
+    header=bytearray(40);header[:8]=b'.krfit\0\0'
+    struct.pack_into('<IIII',header,8,len(code),virtual,size,physical)
+    struct.pack_into('<I',header,36,0x60000020)
+    result[header_offset:header_offset+40]=header
+    struct.pack_into('<H',result,pe.FILE_HEADER.get_field_absolute_offset('NumberOfSections'),len(pe.sections)+1)
+    struct.pack_into('<I',result,pe.OPTIONAL_HEADER.get_field_absolute_offset('SizeOfImage'),align(virtual+len(code),pe.OPTIONAL_HEADER.SectionAlignment))
+    for rva in [0xf250,0xf2e0]:
+        offset=pe.get_offset_from_rva(rva)
+        if raw[offset:offset+3] != b'\x55\x8b\xec':
+            raise ValueError('Unexpected HRP text-fit entry')
+        result[offset:offset+5]=b'\xe9'+struct.pack('<i',virtual-rva-5)
+    checked=pefile.PE(data=result)
+    struct.pack_into('<I',result,checked.OPTIONAL_HEADER.get_field_absolute_offset('CheckSum'),checked.generate_checksum())
+    return bytes(result)
+
+
 def set_ini(raw, section, key, value):
     lines = raw.splitlines(keepends=True); active = False; found = False
     out = []
@@ -94,6 +128,7 @@ def build(game, translations, output):
     if sha(payload['fallout2font.dll']) != SHARED_DLL_HASH:
         raise ValueError('Use the verified shared v1.2.3 font DLL')
     payload['NevadaHD.exe'] = hd_fallback(payload['NevadaHD.exe'])
+    payload['f2_res.dll'] = patch_hrp((game/'f2_res.dll').read_bytes())
     payload['Nevada.cfg'] = set_ini(payload['Nevada.cfg'], 'system', 'language', 'korean')
     from tools.runtime import sfall_crc
     from tools.install_engine import ensure_sfall_crc
@@ -111,7 +146,7 @@ def build(game, translations, output):
     payload['INSTALL_KO.md'] = instructions.read_bytes()
     assert all(sha(payload[n]) == h for n,h in original_translations.items())
     manifest = {k:v for k,v in old_manifest.items() if k not in ['files','engine_release','engine_repository','engine_minimum_release']}
-    manifest.update({'package':'nevada-classic-complete','release':'v2026.10.18-classic-complete.1','engine_mode':'bundled-native-v1.2.3','installation':'copy-overwrite','engine_validation':'standard and HD font registration and wrapping inspected with Nevada bundled sfall','hd_fix':'secondary verified font initialization; shared DLL unchanged','files':{n:sha(b) for n,b in sorted(payload.items())}})
+    manifest.update({'package':'nevada-classic-complete','release':'v2026.10.18-classic-complete.2','engine_mode':'bundled-native-v1.2.3','installation':'copy-overwrite','engine_validation':'standard and HD font registration and wrapping inspected with Nevada bundled sfall','hd_fix':'secondary font initialization and CP949 HRP text fitting; shared font DLL unchanged','files':{n:sha(b) for n,b in sorted(payload.items())}})
     payload['translation-manifest.json'] = json.dumps(manifest,ensure_ascii=False,indent=2).encode('utf-8')
     output.parent.mkdir(parents=True,exist_ok=True)
     with zipfile.ZipFile(output,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
