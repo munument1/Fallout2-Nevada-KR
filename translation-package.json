@@ -25,6 +25,6 @@
     "data/premade/stealth.bio"
   ],
   "engine_mode": "native-structural",
-  "engine_minimum_release": "v1.2.0-beta.1",
+  "engine_minimum_release": "v1.2.1",
   "requires_cjk_binaries": false
 }
